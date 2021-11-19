@@ -24,9 +24,21 @@ public class SetsAndMaps {
     System.out.println(sibAgesFlipped);
 
     //testing mostCommon()
-    sibAgesFlipped.put("RobTest", 20);
-    sibAgesFlipped.put("WhitTest", 17);
-    System.out.println(mostCommon(sibAgesFlipped));
+    Map<String, Integer> testMC = new HashMap<>();
+    for(int i = 0; i < 100; i++) {
+      testMC.put("Test" + i, 20);
+    }
+    for(int i = 100; i < 200; i++) {
+      testMC.put("Test" + i, 14);
+    }
+    for(int i = 300; i < 400; i++) {
+      testMC.put("Test" + i, 7);
+    }
+    for(int i = 400; i < 500; i++) {
+      testMC.put("Test" + i, 97);
+    }
+    testMC.put("Whitney", 17);
+    System.out.println(mostCommon(testMC));
   }
 
   /*Takes a set of strings as a parameter and returns the length of the longest
@@ -45,7 +57,7 @@ public class SetsAndMaps {
       }
     }
 
-    return length;
+    return max;
   }
 
   /*Accepts a map from integers to strings as a parameter and returns a new map of strings to
@@ -65,7 +77,7 @@ values. If original Map has a repeat value, only one is kept as a key in the fli
   /*Accepts a map whose keys are strings and whose values are integers as a parameter and returns
 the integer value that occurs the most times in the map. If there is a tie, return the smaller
 integer value. If the map is empty, throw an exception. (if(condition) {throw new Exception()}
-      Exception = general exception, if you want a specific one say throw ExceptionSubclass, like IllegalArgumentException()
+
 
 Let’s say the map contains mappings from names (strings) to birthday dates (integers). Your
 method would return the most frequently occurring birthdate.
@@ -84,14 +96,18 @@ to the map above, there would now be a tie of four people born on the 17th (Jim,
 and Holly) and four people born on the 6th (Dwight, Karen, Michael, and Angela). So the call
 mostCommon(m) would now return 6 because 6 is the smaller of the most common dates.*/
   public static int mostCommon(Map<String, Integer> m) {
+    //If the Map is empty -> throw an Exception
+    //Exception = general exception, if you want a specific one say throw ExceptionSubclass, like IllegalArgumentException()
+    if(m.isEmpty()) { throw new IllegalArgumentException("Map cannot be empty."); }
     //Collection<type> name = m.values(); creates a Collection view of the values in m
       //if a value appears twice, it will show up twice!
     Collection<Integer> mValues = m.values();
     Map<Integer, Integer> numOfEachValue = new HashMap<>();
+    //number of occurences of the keys in numOfEachValue
     Collection<Integer> numOEVValues = numOfEachValue.values();
     ArrayList<Integer> valuesToReturn = new ArrayList<>();
     int max = 0;
-    int min = 0;
+    int min = Integer.MAX_VALUE;
 
     //fill numOfEachValue with each value in m, 0 (will eventually be the number of occurences of each value)
     for(Integer value : mValues) {
@@ -120,13 +136,14 @@ mostCommon(m) would now return 6 because 6 is the smaller of the most common dat
       }
     }
 
-    System.out.println(valuesToReturn);
-
+//mostCommon, multi-way tie (0.0/0.5)
+  //Test Failed: expected:<3> but was:<5>
+  //Keep looking into this.
+  
     //If only one value has max occurences, return it
     if(valuesToReturn.size() == 1) { return valuesToReturn.get(0); }
     //Else, go through and find the smallest value that had max occurences, return it
     else {
-      min = valuesToReturn.get(0); //setting min to the first value in valuesToReturn as a comparison point
       for(Integer i : valuesToReturn) {
         if(i < min) { min = i; }
       }
